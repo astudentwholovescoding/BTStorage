@@ -6,9 +6,9 @@ import requests
 from bit import PrivateKeyTestnet
 from requests import JSONDecodeError
 
-from chunking import chunk_text, base64_encode
-from metadata import generate_header, parse_header, get_header_size
-from encryption import encode_data
+from .chunking import chunk_text, base64_encode
+from .metadata import generate_header, parse_header, get_header_size
+from .encryption import encode_data
 
 
 class BTStorage:
