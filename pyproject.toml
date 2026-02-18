@@ -1,0 +1,15 @@
+[project]
+name = "btstorage"
+version = "0.1.0"
+description = "A library to host files on the bitcoin testnet blockchain"
+authors = [
+    { name="Nil0" }
+]
+dependencies = [
+    "bit>=0.8.0",
+    "coincurve>=21.0.0",
+    "cryptography>=46.0.0",
+    "python-magic>=0.4.27",
+    "requests>=2.32.0",
+    "toon_format @ git+https://github.com/toon-format/toon-python.git@6b26984a01279defdcf40ab9d09bc418fe8133ac"
+]
