@@ -33,6 +33,14 @@ class BTStorage:
     
     def get_main_balance(self):
         return self.main_key.get_balance()
+
+    def refund(self):
+        temp_key = PrivateKeyTestnet()
+        print(temp_key.segwit_address)
+        while temp_key.get_balance() == 0:
+            time.sleep(10)
+        temp_tx = self.create_tx(temp_key, [], leftover=self.get_main_address())
+        self.push_tx(temp_tx)
     
     def save(self):
         with open(self.db_path, 'w') as db_file:
