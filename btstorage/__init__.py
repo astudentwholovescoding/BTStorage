@@ -4,7 +4,6 @@ import time
 import base64
 import requests
 from bit import PrivateKeyTestnet
-from requests import JSONDecodeError
 
 from .chunking import chunk_text, base64_encode
 from .metadata import generate_header, parse_header, get_header_size
@@ -31,13 +30,22 @@ class BTStorage:
     def get_main_address(self):
         return self.main_key.segwit_address
     
+    def get_balance(self, key):
+        balance = None
+        while balance is None:
+            try:
+                balance = key.get_balance()
+            except Exception:
+                time.sleep(10)
+        return int(balance)
+    
     def get_main_balance(self):
-        return self.main_key.get_balance()
+        return self.get_balance(self.main_key)
 
     def refund(self):
         temp_key = PrivateKeyTestnet()
         print(temp_key.segwit_address)
-        while temp_key.get_balance() == 0:
+        while self.get_balance(temp_key) == 0:
             time.sleep(10)
         temp_tx = self.create_tx(temp_key, [], leftover=self.get_main_address())
         self.push_tx(temp_tx)
@@ -59,7 +67,7 @@ class BTStorage:
             try:
                 tx_hex = key.create_transaction(*args, **kwargs)
                 tx_generated = True
-            except JSONDecodeError:
+            except Exception:
                 time.sleep(10)
         return tx_hex
 
